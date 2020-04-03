@@ -35,6 +35,7 @@ class Model(object):
         self.logger = logging.getLogger(type(self).__name__)
 
         self.model = FmiModel(fmu_path, opts=opts)
+        print(self.model)
 
         # Log level
         try:
@@ -84,3 +85,6 @@ class Model(object):
                 print('[' + class_name + '] ' + txt)
             else:
                 print('[' + class_name + '] ' + repr(txt))
+
+model = FmiModel()
+print(model)

@@ -12,9 +12,11 @@ from __future__ import division
 from __future__ import print_function
 
 import logging
+import os
 from pyfmi import load_fmu
 from pyfmi.fmi import FMUException
 import numpy as np
+from fmpy.model_description import read_model_description
 import pandas as pd
 
 
@@ -30,6 +32,7 @@ class Model(object):
 
     def __init__(self, fmu_path, opts=None):
         self.logger = logging.getLogger(type(self).__name__)
+
 
         try:
             self.logger.debug("Loading FMU")
