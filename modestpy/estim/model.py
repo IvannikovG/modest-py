@@ -85,6 +85,3 @@ class Model(object):
                 print('[' + class_name + '] ' + txt)
             else:
                 print('[' + class_name + '] ' + repr(txt))
-
-model = FmiModel()
-print(model)

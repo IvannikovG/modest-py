@@ -262,3 +262,14 @@ class Model(object):
     def _create_timeline(end, intervals):
         t = np.linspace(0, end, intervals+1)
         return t
+
+
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+
+print(__location__)
+model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
+print(model.model)
+model.model.reset()
+#print(model.model.set())
+print(model.input_names)

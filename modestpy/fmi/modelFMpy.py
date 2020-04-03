@@ -3,7 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 import logging
-#from pyfmi import load_fmu
 from fmpy.model_description import read_model_description
 from fmpy.fmi2 import FMU2Slave
 import numpy as np
@@ -59,7 +58,6 @@ class Model(object):
         self.input_values = list()
         self.output_names = list()
         self.parameter_names = list()
-        # self.full_io = list()
 
         self.parameter_df = pd.DataFrame()
 
@@ -71,16 +69,20 @@ __location__ = os.path.realpath(
 
 print(__location__)
 model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-print(model.model_description.fmiVersion)
-
-#model.reset
-print(model.model_description.coSimulation.modelIdentifier)
+print("Model fmi version:", model.model_description.fmiVersion)
+print("Model name:", model.model_description.coSimulation.modelIdentifier)
 model.model.instantiate()
-#model.model.setFMUstate()
-#model.model.getFMUstate()
-#print(model.model.dll)
-#print(model.model.setupExperiment())
-model.model.freeLibrary()
-
+print("Model object:", model.model)
+print("Model dll:", model.model.dll)
+print(model.model_description.modelVariables)
 model.model.reset()
+print("model was reset") # what does reset mean?
+print(model.model_description)
+print("Model dll:", model.model.dll)
+print(model.model)
+print("Free the model instance")
+model.model.freeInstance()
 print(model.model.dll)
+
+model.model.terminate()
+print(model.model)
