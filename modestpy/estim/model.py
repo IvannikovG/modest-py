@@ -35,7 +35,6 @@ class Model(object):
         self.logger = logging.getLogger(type(self).__name__)
 
         self.model = FmiModel(fmu_path, opts=opts)
-        print(self.model)
 
         # Log level
         try:
