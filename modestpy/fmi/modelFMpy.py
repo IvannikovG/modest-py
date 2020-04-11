@@ -3,13 +3,12 @@ from __future__ import division
 from __future__ import print_function
 
 import logging
-from fmpy.model_description import read_model_description
-from fmpy.fmi2 import FMU2Slave
 from fmpy import simulate_fmu
 import numpy as np
 import pandas as pd
 import os
 from fmpy import extract
+from fmpy.model_description import read_model_description
 
 
 
@@ -26,11 +25,12 @@ class Model(object):
     def __init__(self, fmu_path, opts=None):
         self.logger = logging.getLogger(type(self).__name__)
 
+        self.fmu_path = fmu_path
+        filename = self.fmu_path
+        self.model_description = read_model_description(self.fmu_path)
         try:
             self.logger.debug("Loading FMU")
-            self.model_description = read_model_description(fmu_path)
 
-            filename = fmu_path
 
             if os.path.isfile(os.path.join(filename, 'modelDescription.xml')):
                 unzipdir = filename
@@ -39,13 +39,13 @@ class Model(object):
                 tempdir = extract(filename)
                 unzipdir = tempdir
 
-            fmu_args = {'guid': self.model_description.guid,
+            self.fmu_args = {'guid': self.model_description.guid,
                             'modelIdentifier': self.model_description.coSimulation.modelIdentifier,
                             'unzipDirectory': unzipdir,
                             'instanceName': None,
                             'fmiCallLogger': None}
 
-            self.model = FMU2Slave(**fmu_args)
+            #self.model = FMU2Slave(**fmu_args)
 
         except Exception as e:
             self.logger.error(e)
@@ -105,15 +105,6 @@ class Model(object):
                     self.input_names.append(col)
                     self.input_values.append(df[col].values)
 
-    def specify_outputs(self, outputs):
-        """
-        Specifies names of output variables
-        :param outputs: List of strings, names of output variables
-        :return: None
-        """
-        for name in outputs:
-            if name not in self.output_names:
-                self.output_names.append(name)
 
     def parameters_from_csv(self, csv, sep=','):
         df = pd.read_csv(csv, sep=sep)
@@ -133,19 +124,25 @@ class Model(object):
                                     'of communication points assumed (500)')
             com_points = 500
 
-        self.res = simulate_fmu('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu',
+        self.output_names = ['Ti1']
+        self.res = simulate_fmu(self.fmu_path,
                                 start_time=0.0,
                                 stop_time=100,
-                                input=input)
+                                input=input,
+                                output=self.output_names)
 
-
-        print(self.res)
+        #print(self.res)
 
         df = pd.DataFrame()
+        #print("Self.res.time:", self.res['time'])
         df['time'] = self.res['time']
         df = df.set_index('time')
         for var in self.output_names:
             df[var] = self.res[var]
+
+
+        for var in self.output_names:
+            print(var)
 
         # Reset model
         if reset:
@@ -158,10 +155,8 @@ class Model(object):
                     )
 
         # Return
+        print("Returning dataframe")
         return df
-
-
-
 
 
 
@@ -170,37 +165,11 @@ __location__ = os.path.realpath(
 
 print(__location__)
 model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-print("Model fmi version:", model.model_description.fmiVersion)
-print("Model name:", model.model_description.coSimulation.modelIdentifier)
-model.model.instantiate()
-print("Model object:", model.model)
-print("Model dll:", model.model.dll)
-print(model.model_description.modelVariables)
-model.model.reset()
-print("model was reset") # what does reset mean?
-print(model.model_description)
-print("Model dll:", model.model.dll)
-print(model.model)
-print("Free the model instance")
-model.model.freeInstance()
-print(model.model.dll)
-
-#print("Model terminated")
-#model.model.terminate()
-
-print("Test")
-
-a = []
-
-for i in model.model_description.modelVariables:
-    a.append(i)
-print(a)
 
 print("========================================")
 print("========================================")
 model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
 model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
 
+
 print(model.simulate())
-input = np.genfromtxt('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv', delimiter=',', names=True)
-#print(input)

@@ -148,7 +148,6 @@ class Model(object):
         i = Model._merge_inputs(i)
         input_obj = [self.input_names, i]
 
-        print(input_obj)
         # Options (fixed)
         fmi_opts = self.model.simulate_options()
 
@@ -195,8 +194,8 @@ class Model(object):
                                                final_time=self.end,
                                                input=input_obj,
                                                options=fmi_opts)
-                #print(self.res)
                 break
+
             except FMUException as e:
                 tries += 1
                 self.logger.warning("Simulation failed, failure no. {}"
@@ -211,10 +210,12 @@ class Model(object):
 
         # Convert result to dataframe
         df = pd.DataFrame()
+        print("Self.res.time:", self.res['time'])
         df['time'] = self.res['time']
         df = df.set_index('time')
         for var in self.output_names:
             df[var] = self.res[var]
+            print("Self, res[var]", self.res[var])
 
         # Reset model
         if reset:
@@ -289,14 +290,13 @@ for i in model.parameter_df:
     print(i)
 print(model.model.simulate_options())
 print(model.model.get_capability_flags())
+model.specify_outputs(['Ti1'])
 model.simulate()
 print("000000000000000000000000000000000")
 
-print(model.res)
+print("000000000000000000000000000000000")
 print("000000000000000000000000000000000")
 
 print("000000000000000000000000000000000")
 
-print("000000000000000000000000000000000")
-
-print(model.simulate())
+print("Df:", model.simulate())
