@@ -148,6 +148,7 @@ class Model(object):
         i = Model._merge_inputs(i)
         input_obj = [self.input_names, i]
 
+        print("Input obj:", input_obj)
         # Options (fixed)
         fmi_opts = self.model.simulate_options()
 
@@ -267,36 +268,3 @@ class Model(object):
     def _create_timeline(end, intervals):
         t = np.linspace(0, end, intervals+1)
         return t
-
-
-__location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
-print(__location__)
-model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-print(model.model)
-#model.model.reset()
-#print(model.model.set())
-model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
-print(model.input_names)
-print(model.input_values[0].shape)
-#model.specify_outputs(["angry", "birds", 1])
-print(model.end)
-model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
-print(model.parameter_df)
-model._set_ic()
-print(model.input_names)
-for i in model.parameter_df:
-    print(i)
-print(model.model.simulate_options())
-print(model.model.get_capability_flags())
-model.specify_outputs(['Ti1'])
-model.simulate()
-print("000000000000000000000000000000000")
-
-print("000000000000000000000000000000000")
-print("000000000000000000000000000000000")
-
-print("000000000000000000000000000000000")
-
-print("Df:", model.simulate())
