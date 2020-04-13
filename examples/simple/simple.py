@@ -14,7 +14,7 @@ from __future__ import print_function
 import json
 import os
 import pandas as pd
-from modestpy import Estimation
+import modestpy.estimation
 from modestpy.utilities.sysarch import get_sys_arch
 
 

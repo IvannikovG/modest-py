@@ -47,7 +47,7 @@ class Model(object):
         def simulate(self, com_points=None):
             # TODO: com_points should be adjusted to the number of samples
             self.sim_count += 1
-            self.info('Simulation count = ' + str(self.sim_count))
+            self.info('Simulation count CYKA!! = ' + str(self.sim_count))
             return self.model.simulate(com_points=com_points)
 
         def info(self, txt):
