@@ -139,7 +139,6 @@ class PS(object):
         """
         Proxy method. Each algorithm from ``estim`` package should
         have this method.
-
         :return: DataFrame
         """
         return self._search()
@@ -162,7 +161,6 @@ class PS(object):
         The returned DataFrame contains columns with parameter names,
         additional column '_error_' for the error and the index
         named '_iter_'.
-
         :return: DataFrame
         """
         return self.summary
@@ -204,7 +202,6 @@ class PS(object):
     def _search(self):
         """
         Pattern _search loop.
-
         :return: DataFrame with estimates
         """
         initial_estimates = copy.deepcopy(self.est)
@@ -331,7 +328,6 @@ class PS(object):
         Returns a list with important plots produced by this estimation method.
         Each list element is a dictionary with keys 'name' and 'axes'. The name
         should be given as a string, while axes as matplotlib.Axes instance.
-
         :return: list(dict)
         """
         plots = list()
@@ -342,7 +338,6 @@ class PS(object):
         """
         Returns new ``EstPar`` object with modified value,
         according to ``sign`` and ``max_change``.
-
         :param estpar: EstPar
         :param rel_step: float, (0-1)
         :param sign: string, '+' or '-'
@@ -380,7 +375,6 @@ class PS(object):
         """
         Puts ``estpar`` in ``estpar_list``, replacing object
         with the same ``name``.
-
         :param estpar_list: list of EstPar objects
         :param estpar: EstPar
         :return: list of EstPar objects
