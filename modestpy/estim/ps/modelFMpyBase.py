@@ -44,32 +44,18 @@ class Model(object):
         self.res = None
 
     #Specify input for a model, return None
-    #def specify_input(self, input):
-        #self.input = np.genfromtxt(input, delimiter=',', names=True)
+    def specify_input(self, input):
+        self.input = np.genfromtxt(input, delimiter=',', names=True)
 
     def parameters_from_csv(self, csv, sep=','):
         df = pd.read_csv(csv, sep=sep)
         self.parameters_from_df(df)
-        self.input = np.genfromtxt(csv, delimiter=',', names=True)
 
     def parameters_from_df(self, df):
         if df is not None:
             df = df.copy()
             for col in df:
                 self.parameter_df[col] = df[col]
-
-    def inputs_from_csv(self, csv, sep=',', exclude=list()):
-        """
-        Reads inputs from a CSV file (format of the standard input file
-        in ModelManager). It is assumed that time is given in seconds.
-        :param csv: Path to the CSV file
-        :param exclude: list of strings, columns to be excluded
-        :return: None
-        """
-        df = pd.read_csv(csv, sep=sep)
-        assert 'time' in df.columns, "'time' not present in csv..."
-        df = df.set_index('time')
-        self.inputs_from_df(df, exclude)
 
     def inputs_from_df(self, df, exclude=list()):
         """
@@ -115,12 +101,9 @@ class Model(object):
                                     'of communication points assumed (500)')
             com_points = 500
 
-        #Init start and end, init input
-
         self.res = simulate_fmu(self.fmu_path,
                                 start_time=self.start,
                                 stop_time=self.end,
-                                #apply_default_start_values=True,
                                 input=self.input,
                                 output=self.output_names)
 
@@ -149,27 +132,16 @@ class Model(object):
         print("Returning dataframe")
         return df
 
-        @staticmethod
-        def _merge_inputs(inputs):
-            return np.transpose(np.vstack(inputs))
-
-        @staticmethod
-        def _create_timeline(end, intervals):
-            t = np.linspace(0, end, intervals+1)
-            return t
 
 
 __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 print("========================================")
-model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
-model.specify_outputs(['Ti1', 'Ti2'])
-model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
-print(model.simulate())
+#model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
+#model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
+#model.specify_outputs(['Ti1', 'Ti2'])
+#model.specify_input('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
+#print(model.simulate())
 print("Imported Base Model")
 print("========================================")
-
-print(model.input)
-print(model.end)

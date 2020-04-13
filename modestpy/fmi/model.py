@@ -147,6 +147,7 @@ class Model(object):
         i.extend(self.input_values)
         i = Model._merge_inputs(i)
         input_obj = [self.input_names, i]
+        self.input = input_obj
 
         print("Input obj:", input_obj)
         # Options (fixed)
@@ -268,3 +269,15 @@ class Model(object):
     def _create_timeline(end, intervals):
         t = np.linspace(0, end, intervals+1)
         return t
+
+
+model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
+model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
+model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
+model.specify_outputs(['Ti1', 'Ti2'])
+print(model.simulate())
+print("Imported Base Model")
+print("========================================")
+
+print(model.input)
+print(model.parameter_df)
