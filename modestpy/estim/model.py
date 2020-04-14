@@ -59,7 +59,8 @@ class Model(object):
                     print('[' + class_name + '] ' + repr(txt))
 
 
-model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-model.model.specify_outputs(['Ti1', 'Ti2'])
-model.model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
-print(model.model.simulate())
+if __name__ == "__main__":
+    model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
+    model.model.specify_outputs(['Ti1', 'Ti2'])
+    model.model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
+    print(model.model.simulate())
