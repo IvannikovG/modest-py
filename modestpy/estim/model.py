@@ -3,6 +3,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import os
+
 import logging
 from modestpy.fmi.model import Model as FMPyModel
 
@@ -60,7 +62,16 @@ class Model(object):
 
 
 if __name__ == "__main__":
-    model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
+    basedir = os.getenv(
+        'DE_AES_DIR_BASE',
+        os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..')
+    )
+    model = Model(os.path.join(basedir, 'modestpy/test/resources/simple2R1C/Simple2R1C_linux64.fmu'))
+    model.model.parameters_from_csv(
+        os.path.join(basedir, 'modestpy/test/resources/simple2R1C/parameters.csv')
+    )
     model.model.specify_outputs(['Ti1', 'Ti2'])
-    model.model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
+    model.model.inputs_from_csv(
+        os.path.join(basedir, 'modestpy/test/resources/simple2R1C/inputs.csv')
+    )
     print(model.model.simulate())

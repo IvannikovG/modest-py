@@ -155,15 +155,21 @@ class Model(object):
 
 
 if __name__ == "__main__":
-    __location__ = os.path.realpath(
-    os.path.join(os.getcwd(), os.path.dirname(__file__)))
-
     print("========================================")
-    model = Model('/home/georgii/Documents/modest-py/modestpy/fmi/Simple2R1C.fmu')
-    model.parameters_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/true_parameters.csv')
+    basedir = os.getenv(
+        'DE_AES_DIR_BASE',
+        os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..')
+    )
+    print(basedir)
+
+    model = Model(
+        os.path.join(basedir, 'modestpy/test/resources/simple2R1C/Simple2R1C_linux64.fmu')
+    )
+    model.parameters_from_csv(
+        os.path.join(basedir, 'modestpy/test/resources/simple2R1C/parameters.csv')
+    )
     model.specify_outputs(['Ti1', 'Ti2'])
-    model.inputs_from_csv('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
-    #model.specify_input('/home/georgii/Documents/modest-py/modestpy/fmi/inputs.csv')
+    model.inputs_from_csv(os.path.join(basedir, 'modestpy/test/resources/simple2R1C/inputs.csv'))
 
     print("Imported Base Model")
     print("========================================")
