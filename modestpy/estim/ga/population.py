@@ -59,7 +59,7 @@ class Population(object):
             self._initialize(init_pop)
             self.calculate()
 
-    def instantiate_model(self):
+    def instantiate_model(self, opts):
         self.model = Model(self.fmu_path)
         self.model.set_input(self.inputs)
         self.model.set_param(self.known_pars)
