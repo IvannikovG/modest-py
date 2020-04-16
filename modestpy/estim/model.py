@@ -10,13 +10,14 @@ from modestpy.fmi.model import Model as FMPyModel
 
 VERBOSE = True
 
+
 class Model(object):
     def __init__(self, fmu_path, opts=None):
         self.logger = logging.getLogger(type(self).__name__)
 
         self.model = FMPyModel(fmu_path, opts=opts)
 
-        #Logging: >TODO<
+        # Logging: >TODO<
 
         # Simulation count
         self.sim_count = 0
@@ -66,7 +67,9 @@ if __name__ == "__main__":
         'DE_AES_DIR_BASE',
         os.path.join(os.path.abspath(os.path.dirname(__file__)), '..', '..')
     )
-    model = Model(os.path.join(basedir, 'modestpy/test/resources/simple2R1C/Simple2R1C_linux64.fmu'))
+    model = Model(os.path.join(
+        basedir, 'modestpy/test/resources/simple2R1C/Simple2R1C_linux64.fmu'
+    ))
     model.model.parameters_from_csv(
         os.path.join(basedir, 'modestpy/test/resources/simple2R1C/parameters.csv')
     )

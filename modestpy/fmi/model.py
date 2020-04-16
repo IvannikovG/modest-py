@@ -24,10 +24,12 @@ class Model(object):
             self.fmu_path = fmu_path
             self.model_description = read_model_description(self.fmu_path)
 
-            self.fmu_args = {'guid': self.model_description.guid,
-                            'modelIdentifier': self.model_description.coSimulation.modelIdentifier,
-                            'instanceName': None,
-                            'fmiCallLogger': None}
+            self.fmu_args = {
+                'guid': self.model_description.guid,
+                'modelIdentifier': self.model_description.coSimulation.modelIdentifier,
+                'instanceName': None,
+                'fmiCallLogger': None
+            }
 
         except Exception as e:
             self.logger.error(e)
@@ -44,7 +46,6 @@ class Model(object):
         self.input = None
         self.parameter_df = pd.DataFrame()
         self.res = None
-
 
     def parameters_from_csv(self, csv, sep=','):
         df = pd.read_csv(csv, sep=sep)
