@@ -131,15 +131,15 @@ class Model(object):
         for var in self.output_names:
             df[var] = self.res[var]
 
-        # Reset model
-        if reset:
-            try:
-                self.reset()
-            except Exception as e:
-                self.logger.warning(
-                    "If you try to simulate an EnergyPlus FMU, "
-                    "use reset=False"
-                    )
+        # # Reset model
+        # if reset:
+        #     try:
+        #         self.reset()
+        #     except Exception as e:
+        #         self.logger.warning(
+        #             "If you try to simulate an EnergyPlus FMU, "
+        #             "use reset=False"
+        #             )
 
         # Return
         print("Returning dataframe")

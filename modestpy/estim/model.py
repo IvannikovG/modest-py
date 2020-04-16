@@ -38,12 +38,12 @@ class Model(object):
 
         self.model = FmiModel(fmu_path, opts=opts)
 
-        # Log level
-        try:
-            self.model.model.set_log_level(FMI_WARNING)
-        except AttributeError as e:
-            self.logger.error(e.message)
-            self.logger.error('Proceeding with standard log level...')
+        # # Log level
+        # try:
+        #     self.model.model.set_log_level(FMI_WARNING)
+        # except AttributeError as e:
+        #     self.logger.error(e.message)
+        #     self.logger.error('Proceeding with standard log level...')
 
         # Simulation count
         self.sim_count = 0
