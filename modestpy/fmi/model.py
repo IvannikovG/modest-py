@@ -120,7 +120,7 @@ class Model(object):
         self.res = simulate_fmu(self.fmu_path,
                                 start_time=self.start,
                                 stop_time=self.end,
-                                #output_interval=431.88,
+                                output_interval=com_points,
                                 input=self.input,
                                 output=self.output_names)
 
