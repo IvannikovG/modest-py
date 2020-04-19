@@ -14,8 +14,8 @@ from __future__ import print_function
 import json
 import os
 import pandas as pd
-import modestpy.estimation
 from modestpy.utilities.sysarch import get_sys_arch
+from modestpy import Estimation
 
 
 if __name__ == "__main__":
