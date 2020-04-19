@@ -115,7 +115,8 @@ class Model(object):
                                     'of communication points assumed (500)')
             com_points = 500
 
-        #Init start and end, init input
+        if not self.parameter_df.empty:
+            self._set_all_parameters()
 
         self.res = simulate_fmu(self.fmu_path,
                                 start_time=self.start,
@@ -144,6 +145,15 @@ class Model(object):
         # Return
         print("Returning dataframe")
         return df
+
+
+    def _set_parameter(self, name, value):
+        if name not in self.parameter_names:
+            self.parameter_names.append(name)
+
+    def _set_all_parameters(self):
+        for var in self.parameter_df:
+            self._set_parameter(var, self.parameter_df[var])
 
         @staticmethod
         def _merge_inputs(inputs):
@@ -177,3 +187,13 @@ if __name__ == "__main__":
 
     print(model.simulate())
     print(model.input.shape)
+    print("========================================")
+    print('Options:', model.opts)
+
+    print('Input_names:', model.input_names)
+    print('Input_values:', model.input_values)
+    print('output_names:', model.output_names)
+    print('Parameter names:', model.parameter_names)
+    # self.full_io = list()
+    print('Parameter DF')
+    print(model.parameter_df)
